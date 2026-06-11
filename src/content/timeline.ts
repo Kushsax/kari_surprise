@@ -3,11 +3,11 @@ import img1 from '../assets/68be0849-2214-4ebe-8a9d-3c491f80220d.JPG';
 import img3 from '../assets/c43bb01a-77b1-4610-a353-787334eb244c.JPG';
 import makingItOfficialImg from '../assets/making it official.JPG';
 import firstMeetingImg from '../assets/Our first meetin.jpg';
-import img5 from '../assets/IMG_0995.JPG';
+import img5 from '../assets/WhatsApp Image 2026-06-11 at 23.04.47.jpeg';
 import img6 from '../assets/IMG_1174.JPG';
 import img7 from '../assets/ec73365e-82c6-4c90-ad24-4ec5b55ee42d.JPG';
 import img8 from '../assets/valentines.jpeg';
-import img9 from '../assets/WhatsApp Image 2026-02-14 at 12.16.21.jpeg';
+import img9 from '../assets/one year.jpeg';
 
 export const timelineMilestones: Milestone[] = [
   {
