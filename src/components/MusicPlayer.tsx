@@ -13,7 +13,7 @@ const tracks: Track[] = [
   {
     title: "I Think They Call This Love",
     artist: "Elliot James Reay",
-    url: "/i_think_they_call_this_love.mp3", // Sourced locally from public folder
+    url: "i_think_they_call_this_love.mp3", // Sourced locally from public folder (relative path for GitHub Pages compatibility)
     coverUrl: coverArt
   }
 ];
@@ -31,6 +31,45 @@ export default function MusicPlayer() {
   const animationRef = useRef<number | null>(null);
 
   const activeTrack = tracks[currentIdx];
+
+  // Autoplay attempt on mount & interaction fallback
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // 1. Try playing immediately on page load
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay was blocked (standard modern browser policy).
+        // Listen for the first physical user interaction to play
+        const startAudioOnInteraction = () => {
+          if (audioRef.current) {
+            const play = audioRef.current.play();
+            if (play !== undefined) {
+              play
+                .then(cleanListeners)
+                .catch((err) => console.log("Interaction autoplay blocked:", err));
+            } else {
+              cleanListeners();
+            }
+          }
+        };
+
+        const cleanListeners = () => {
+          window.removeEventListener('click', startAudioOnInteraction);
+          window.removeEventListener('touchstart', startAudioOnInteraction);
+          window.removeEventListener('scroll', startAudioOnInteraction);
+          window.removeEventListener('keydown', startAudioOnInteraction);
+        };
+
+        window.addEventListener('click', startAudioOnInteraction);
+        window.addEventListener('touchstart', startAudioOnInteraction);
+        window.addEventListener('scroll', startAudioOnInteraction);
+        window.addEventListener('keydown', startAudioOnInteraction);
+      });
+    }
+  }, []);
 
   // Sync audio instances on track changes (only run when index actually changes)
   const isMounted = useRef(false);
@@ -194,6 +233,9 @@ export default function MusicPlayer() {
       <audio
         ref={audioRef}
         src={activeTrack.url}
+        autoPlay={true}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleAudioEnded}

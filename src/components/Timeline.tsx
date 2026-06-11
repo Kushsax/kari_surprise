@@ -56,7 +56,7 @@ export default function Timeline() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-zinc-400 font-light"
           >
-            From the very first coffee debate to the major milestones we celebrate today.
+            From the very first walk in GEL to the major milestones we celebrate today.
           </motion.p>
         </div>
 
